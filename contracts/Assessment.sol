@@ -6,6 +6,7 @@ pragma solidity ^0.8.9;
 contract Assessment {
     address payable public owner;
     uint256 public balance;
+    uint256 public lastDoubleTime;
 
     event Deposit(uint256 amount);
     event Withdraw(uint256 amount);
@@ -13,9 +14,10 @@ contract Assessment {
     constructor(uint initBalance) payable {
         owner = payable(msg.sender);
         balance = initBalance;
+        lastDoubleTime = block.timestamp;
     }
 
-    function getBalance() public view returns(uint256){
+    function getBalance() public view returns (uint256) {
         return balance;
     }
 
@@ -42,10 +44,7 @@ contract Assessment {
         require(msg.sender == owner, "You are not the owner of this account");
         uint _previousBalance = balance;
         if (balance < _withdrawAmount) {
-            revert InsufficientBalance({
-                balance: balance,
-                withdrawAmount: _withdrawAmount
-            });
+            revert InsufficientBalance({ balance: balance, withdrawAmount: _withdrawAmount });
         }
 
         // withdraw the given amount
@@ -56,5 +55,24 @@ contract Assessment {
 
         // emit the event
         emit Withdraw(_withdrawAmount);
+    }
+
+    function doubleBalance() public {
+        require(msg.sender == owner, "You are not the owner of this account");
+        require(block.timestamp >= lastDoubleTime + 10 seconds, "Double balance cooldown not over yet.");
+
+        // Double the balance
+        balance *= 2;
+
+        // Set the last doubling time
+        lastDoubleTime = block.timestamp;
+
+        // emit the event
+        emit Deposit(balance);
+    }
+
+    // Function to check if the cooldown is over (useful for the frontend)
+    function isCooldownOver() public view returns (bool) {
+        return block.timestamp >= lastDoubleTime + 30 seconds;
     }
 }
