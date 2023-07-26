@@ -143,7 +143,7 @@ export default function HomePage() {
     <main className="container d-flex justify-content-center align-items-center">
       <div className="text-center">
         <header>
-          <h1>Welcome to the Metacrafters ATM!</h1>
+          <h1>Welcome to the Metacrafters Bank!</h1>
         </header>
         {initUser()}
 
