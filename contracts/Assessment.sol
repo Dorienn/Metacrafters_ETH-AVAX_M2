@@ -56,23 +56,4 @@ contract Assessment {
         // emit the event
         emit Withdraw(_withdrawAmount);
     }
-
-    function doubleBalance() public {
-        require(msg.sender == owner, "You are not the owner of this account");
-        require(block.timestamp >= lastDoubleTime + 10 seconds, "Double balance cooldown not over yet.");
-
-        // Double the balance
-        balance *= 2;
-
-        // Set the last doubling time
-        lastDoubleTime = block.timestamp;
-
-        // emit the event
-        emit Deposit(balance);
-    }
-
-    // Function to check if the cooldown is over (useful for the frontend)
-    function isCooldownOver() public view returns (bool) {
-        return block.timestamp >= lastDoubleTime + 30 seconds;
-    }
 }
