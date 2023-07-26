@@ -13,6 +13,7 @@ export default function HomePage() {
   const atmABI = atm_abi.abi;
 
   const [transactionHistory, setTransactionHistory] = useState([]);
+  const [interest, setInterest] = useState(undefined);
 
   const getWallet = async() => {
     if (window.ethereum) {
@@ -97,6 +98,14 @@ export default function HomePage() {
     }
   };
 
+  const getInterest = async () => {
+    if (atm) {
+      const interest = await atm.calculateBalanceAfterOneYear();
+      const formattedInterest = ethers.utils.formatEther(interest); 
+      setInterest(formattedInterest);
+    }
+  };
+
   const initUser = () => {
     // Check to see if user has Metamask
     if (!ethWallet) {
@@ -116,13 +125,19 @@ export default function HomePage() {
       <div>
         <p>Your Account: {account}</p>
         <p>Your Balance: {balance}</p>
+        {interest !== undefined && (
+          <p>Interest After One Year: {interest}</p>
+        )}
         <button onClick={deposit}>Deposit 1 ETH</button>
         <button onClick={withdraw}>Withdraw 1 ETH</button>
       </div>
     )
   }
 
-  useEffect(() => {getWallet();}, []);
+  useEffect(() => {
+    getWallet();
+    getInterest();
+  }, [balance]);
 
   return (
     <main className="container d-flex justify-content-center align-items-center">

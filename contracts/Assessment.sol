@@ -1,12 +1,11 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.9;
 
-//import "hardhat/console.sol";
-
 contract Assessment {
     address payable public owner;
     uint256 public balance;
     uint256 public lastDoubleTime;
+    uint256 public constant interestRate = 25; // 0.25% expressed as an integer
 
     event Deposit(uint256 amount);
     event Withdraw(uint256 amount);
@@ -56,4 +55,14 @@ contract Assessment {
         // emit the event
         emit Withdraw(_withdrawAmount);
     }
+
+    function calculateBalanceAfterOneYear() public view returns (uint256) {
+        // Calculate the interest earned in one year
+        uint256 interest = (balance * interestRate) / 10000; // 0.25% interest rate expressed as an integer
+
+        // Return the balance after one year with the interest added
+        return balance + interest;
+    }
+
+    
 }
