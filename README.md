@@ -10,3 +10,8 @@ After cloning the github, you will want to do the following to get the code runn
 
 After this, the project will be running on your localhost. 
 Typically at http://localhost:3000/
+
+# Modifications made
+
+Added interest rate calculation from the smart contract and fetched by frontend
+Added transaction history tracking on the frontend by storing each transactions locally
