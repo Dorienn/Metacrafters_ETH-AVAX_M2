@@ -4,7 +4,6 @@ pragma solidity ^0.8.9;
 contract Assessment {
     address payable public owner;
     uint256 public balance;
-    uint256 public lastDoubleTime;
     uint256 public constant interestRate = 25;
 
     event Deposit(uint256 amount);
@@ -13,7 +12,6 @@ contract Assessment {
     constructor(uint initBalance) payable {
         owner = payable(msg.sender);
         balance = initBalance;
-        lastDoubleTime = block.timestamp;
     }
 
     function getBalance() public view returns (uint256) {
